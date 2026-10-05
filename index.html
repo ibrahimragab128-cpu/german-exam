@@ -34,7 +34,6 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
         }
 
-        /* Login Screen */
         #login-screen {
             text-align: center;
             padding: 40px 20px;
@@ -71,7 +70,6 @@
             border-color: var(--secondary-color);
         }
 
-        /* Timer Header */
         #exam-header {
             display: flex;
             justify-content: space-between;
@@ -95,7 +93,6 @@
             border-radius: 6px;
         }
 
-        /* Sections */
         .section-card {
             background: #f1f5f9;
             border-left: 5px solid var(--secondary-color);
@@ -160,7 +157,6 @@
             margin-top: 8px;
         }
 
-        /* Buttons */
         .btn {
             background: var(--secondary-color);
             color: white;
@@ -184,7 +180,6 @@
             margin-top: 40px;
         }
 
-        /* Results Screen */
         #result-screen {
             display: none;
             text-align: center;
@@ -264,7 +259,7 @@
                     <h2 class="section-title">I. LESEN [12 Punkte]</h2>
                     <div class="reading-box">
                         <strong>Lies den Text!</strong><br><br>
-                        Tina ist Schülerin in Klasse 8. Am Wochenende hat sie viel Zeit. Sie trifft Petra, eine Freundin aus München, und sie gehen zusammen ins Cafe. Dort reden sie zusammen. Tina ist sehr sportlich. Sie spielt oft Tennis und fährt am Sonntag Rad. Am liebsten sitzt sie aber zu Hause und liest. Sie sieht nicht viel fern. Tinas Berufswunsch ist Stewardess. Sie findet den Beruf interessant. Sie möchte viel reisen und die Welt kennen lernen.
+                        Tina ist Schülerin in Klasse 8. Am Wochenende hat sie viel Zeit. Sie trifft Petra, eine Freundin aus München, und sie gehen zusammen ins Cafe. Dort reden sie zusammen. Tina ist sehr sportlich. Sie spielt oft Tennis und fährt am Sonntag Rad. Am liebsten sitzt sie aber zu Hause und liest. Sie sieht nicht viel fern. Tinas Berufswunsch is Stewardess. Sie findet den Beruf interessant. Sie möchte viel reisen und die Welt kennen lernen.
                     </div>
 
                     <!-- Q1 -->
@@ -383,7 +378,7 @@
                         </div>
                     </div>
 
-                    <!-- G6 (Added by Expert) -->
+                    <!-- G6 -->
                     <div class="question-item">
                         <p>6. Wir (fahren - fährst - fährt) im Sommer nach Deutschland.</p>
                         <div class="options">
@@ -464,17 +459,16 @@
 
     <script>
         let timerInterval;
-        let timeLeft = 30 * 60; // 30 minutes in seconds
+        let timeLeft = 30 * 60; 
         let studentName = "";
 
-        // Correct Answers Matrix
         const correctAnswers = {
-            q1: "b", // Sie gehen ins Cafe
-            q2: "c", // Sie sitzt zu Hause
-            q3: "c", // Stewardess
-            q4: "b", // Freundin
-            q5: "c", // Zu Hause
-            q6: "b", // Am Sonntag
+            q1: "b",
+            q2: "c",
+            q3: "c",
+            q4: "b",
+            q5: "c",
+            q6: "b",
             
             g1: "steht",
             g2: "Um",
@@ -515,7 +509,7 @@
                 let minutes = Math.floor(timeLeft / 60);
                 let seconds = timeLeft % 60;
                 
-                timerDisplay.textContent = `Zeit: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                timerDisplay.textContent = "Zeit: " + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
                 
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
@@ -527,7 +521,8 @@
         }
 
         function normalizeText(text) {
-            return text.trim().toLowerCase().replace(/[.,?!]/g, "").replace(/\s+/g, " ");
+            if (!text) return "";
+            return text.trim().toLowerCase().replace(".", "").replace(",", "").replace("?", "").replace("!", "").replace(/\s+/g, " ");
         }
 
         function submitExam(event) {
@@ -537,70 +532,64 @@
             let score = 0;
             let feedbackHTML = "";
 
-            // Evaluate Lesen (6 questions, 2 pts each = 12)
             for(let i=1; i<=6; i++) {
-                let qName = `q${i}`;
-                let selected = document.querySelector(`input[name="${qName}"]:checked`);
+                let qName = "q" + i;
+                let selected = document.querySelector('input[name="' + qName + '"]:checked');
                 let userVal = selected ? selected.value : "";
                 let isCorrect = (userVal === correctAnswers[qName]);
                 if(isCorrect) score += 2;
 
-                feedbackHTML += `<div class="feedback-item ${isCorrect ? 'correct' : 'incorrect'}">
-                    <strong>Lesen Fr. ${i}:</strong> ${isCorrect ? 'Richtig (+2 P.)' : `Falsch (Ihre Antwort: ${userVal \vert{}\vert{} 'Keine'}, Richtige Antwort:${correctAnswers[qName]})`}
-                </div>`;
+                feedbackHTML += '<div class="feedback-item ' + (isCorrect ? 'correct' : 'incorrect') + '">' +
+                    '<strong>Lesen Fr. ' + i + ':</strong> ' + (isCorrect ? 'Richtig (+2 P.)' : 'Falsch (Ihre Antwort: ' + (userVal || 'Keine') + ', Richtige Antwort: ' + correctAnswers[qName] + ')') +
+                '</div>';
             }
 
-            // Evaluate Grammatik (6 questions, 2 pts each = 12)
             for(let i=1; i<=6; i++) {
-                let gName = `g${i}`;
-                let selected = document.querySelector(`input[name="${gName}"]:checked`);
+                let gName = "g" + i;
+                let selected = document.querySelector('input[name="' + gName + '"]:checked');
                 let userVal = selected ? selected.value : "";
                 let isCorrect = (userVal === correctAnswers[gName]);
                 if(isCorrect) score += 2;
 
-                feedbackHTML += `<div class="feedback-item ${isCorrect ? 'correct' : 'incorrect'}">
-                    <strong>Grammatik Fr. ${i}:</strong> ${isCorrect ? 'Richtig (+2 P.)' : `Falsch (Ihre Antwort: ${userVal \vert{}\vert{} 'Keine'}, Richtige Antwort:${correctAnswers[gName]})`}
-                </div>`;
+                feedbackHTML += '<div class="feedback-item ' + (isCorrect ? 'correct' : 'incorrect') + '">' +
+                    '<strong>Grammatik Fr. ' + i + ':</strong> ' + (isCorrect ? 'Richtig (+2 P.)' : 'Falsch (Ihre Antwort: ' + (userVal || 'Keine') + ', Richtige Antwort: ' + correctAnswers[gName] + ')') +
+                '</div>';
             }
 
-            // Evaluate Sätze ordnen (5 questions, 2 pts each = 10)
             for(let i=1; i<=5; i++) {
-                let sName = `s${i}`;
-                let userVal = document.querySelector(`input[name="${sName}"]`).value;
+                let sName = "s" + i;
+                let userVal = document.querySelector('input[name="' + sName + '"]').value;
                 let normUser = normalizeText(userVal);
                 let normCorrect = normalizeText(correctAnswers[sName]);
                 let isCorrect = (normUser === normCorrect);
                 if(isCorrect) score += 2;
 
-                feedbackHTML += `<div class="feedback-item ${isCorrect ? 'correct' : 'incorrect'}">
-                    <strong>Sätze Fr. ${i}:</strong> ${isCorrect ? 'Richtig (+2 P.)' : `Falsch (Ihre Antwort: "${userVal}", Richtige Antwort: "${correctAnswers[sName]}")`}
-                </div>`;
+                feedbackHTML += '<div class="feedback-item ' + (isCorrect ? 'correct' : 'incorrect') + '">' +
+                    '<strong>Sätze Fr. ' + i + ':</strong> ' + (isCorrect ? 'Richtig (+2 P.)' : 'Falsch (Ihre Antwort: "' + userVal + '", Richtige Antwort: "' + correctAnswers[sName] + '")') +
+                '</div>';
             }
 
-            // Evaluate Dialog (3 questions, 2 pts each = 6)
             for(let i=1; i<=3; i++) {
-                let dName = `d${i}`;
-                let userVal = document.querySelector(`input[name="${dName}"]`).value;
+                let dName = "d" + i;
+                let userVal = document.querySelector('input[name="' + dName + '"]').value;
                 let normUser = normalizeText(userVal);
                 let isCorrect = normUser.includes(correctAnswers[dName].split(" ")[0]) || (normUser.length > 3 && normUser === normalizeText(correctAnswers[dName]));
                 if(isCorrect) score += 2;
 
-                feedbackHTML += `<div class="feedback-item ${isCorrect ? 'correct' : 'incorrect'}">
-                    <strong>Dialog Pkt. ${i}:</strong> ${isCorrect ? 'Richtig (+2 P.)' : `Falsch/Unvollständig (Ihre Antwort: "${userVal}", Vorschlag: "${correctAnswers[dName]}")`}
-                </div>`;
+                feedbackHTML += '<div class="feedback-item ' + (isCorrect ? 'correct' : 'incorrect') + '">' +
+                    '<strong>Dialog Pkt. ' + i + ':</strong> ' + (isCorrect ? 'Richtig (+2 P.)' : 'Falsch/Unvollständig (Ihre Antwort: "' + userVal + '", Vorschlag: "' + correctAnswers[dName] + '")') +
+                '</div>';
             }
 
-            // Show results screen
             document.getElementById("exam-screen").classList.add("hidden");
             document.getElementById("result-screen").style.display = "block";
-            document.getElementById("final-score-display").textContent = `${score} / 40`;
-            document.getElementById("student-result-name").textContent = `Schüler: ${studentName}`;
+            document.getElementById("final-score-display").textContent = score + " / 40";
+            document.getElementById("student-result-name").textContent = "Schüler: " + studentName;
             document.getElementById("feedback-container").innerHTML = feedbackHTML;
 
-            // WhatsApp Share link setup
-            let waNumber = "201000000000"; // ضع رقم واتساب الخاص بك هنا
-            let waMessage = `Ergebnisprüfung:%0AName: ${encodeURIComponent(studentName)}%0APunkte: ${score} von 40`;
-            document.getElementById("whatsapp-link").href = `https://wa.me/${waNumber}?text=${waMessage}`;
+            let waNumber = "201000000000"; 
+            let waMessage = "Ergebnisprüfung:\nName: " + studentName + "\nPunkte: " + score + " von 40";
+            document.getElementById("whatsapp-link").href = "https://wa.me/" + waNumber + "?text=" + encodeURIComponent(waMessage);
         }
     </script>
 </body>
