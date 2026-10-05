@@ -259,7 +259,7 @@
                     <h2 class="section-title">I. LESEN [12 Punkte]</h2>
                     <div class="reading-box">
                         <strong>Lies den Text!</strong><br><br>
-                        Tina ist Schülerin in Klasse 8. Am Wochenende hat sie viel Zeit. Sie trifft Petra, eine Freundin aus München, und sie gehen zusammen ins Cafe. Dort reden sie zusammen. Tina ist sehr sportlich. Sie spielt oft Tennis und fährt am Sonntag Rad. Am liebsten sitzt sie aber zu Hause und liest. Sie sieht nicht viel fern. Tinas Berufswunsch is Stewardess. Sie findet den Beruf interessant. Sie möchte viel reisen und die Welt kennen lernen.
+                        Tina ist Schülerin in Klasse 8. Am Wochenende hat sie viel Zeit. Sie trifft Petra, eine Freundin aus München, und sie gehen zusammen ins Cafe. Dort reden sie zusammen. Tina ist sehr sportlich. Sie spielt oft Tennis und fährt am Sonntag Rad. Am liebsten sitzt sie aber zu Hause und liest. Sie sieht nicht viel fern. Tinas Berufswunsch ist Stewardess. Sie findet den Beruf interessant. Sie möchte viel reisen und die Welt kennen lernen.
                     </div>
 
                     <!-- Q1 -->
@@ -587,7 +587,8 @@
             document.getElementById("student-result-name").textContent = "Schüler: " + studentName;
             document.getElementById("feedback-container").innerHTML = feedbackHTML;
 
-            let waNumber = "201000000000"; 
+            // تم تحديث رقم الواتساب الخاص بك هنا
+            let waNumber = "201091115165"; 
             let waMessage = "Ergebnisprüfung:\nName: " + studentName + "\nPunkte: " + score + " von 40";
             document.getElementById("whatsapp-link").href = "https://wa.me/" + waNumber + "?text=" + encodeURIComponent(waMessage);
         }
