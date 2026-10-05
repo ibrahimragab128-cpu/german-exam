@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="de" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monatsprüfung September</title>
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #3b82f6;
+            --accent-color: #f59e0b;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            direction: ltr;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        /* Login Screen */
+        #login-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        #login-screen h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+        }
+
+        #login-screen p {
+            color: #64748b;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            width: 80%;
+            max-width: 400px;
+            padding: 14px 20px;
+            font-size: 1.1rem;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--secondary-color);
+        }
+
+        /* Timer Header */
+        #exam-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--primary-color);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        #timer {
+            font-weight: bold;
+            font-size: 1.2rem;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 12px;
+            border-radius: 6px;
+        }
+
+        /* Sections */
+        .section-card {
+            background: #f1f5f9;
+            border-left: 5px solid var(--secondary-color);
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-size: 1.4rem;
+            margin-top: 0;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+        }
+
+        .reading-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-size: 1.05rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .question-item {
+            margin-bottom: 25px;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .question-item p {
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 12px;
+        }
+
+        .options label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 6px 10px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .options label:hover {
+            background: #e0f2fe;
+        }
+
+        .text-answer-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 1rem;
+            margin-top: 8px;
+        }
+
+        /* Buttons */
+        .btn {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.1s;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        .btn-center {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        /* Results Screen */
+        #result-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .score-badge {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            font-weight: bold;
+            margin: 20px 0;
+            background: #e0f2fe;
+            display: inline-block;
+            padding: 15px 40px;
+            border-radius: 50px;
+        }
+
+        .feedback-item {
+            text-align: left;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .feedback-item.correct {
+            border-left: 5px solid var(--success);
+        }
+
+        .feedback-item.incorrect {
+            border-left: 5px solid var(--danger);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .whatsapp-btn {
+            background: #25d366;
+            margin-top: 20px;
+            text-decoration: none;
+            color: white;
+            display: inline-block;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        .whatsapp-btn:hover {
+            background: #1ebd58;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Login Screen -->
+        <div id="login-screen">
+            <h1>Monatsprüfung September</h1>
+            <p>Bitte geben Sie Ihren Namen ein, um die Prüfung zu starten.</p>
+            <div class="input-group">
+                <input type="text" id="student-name" placeholder="Vollständiger Name des Schülers..." required>
+            </div>
+            <button class="btn" onclick="startExam()">Prüfung starten</button>
+        </div>
+
+        <!-- Exam Form -->
+        <div id="exam-screen" class="hidden">
+            <div id="exam-header">
+                <div>Schüler: <span id="display-name" style="font-weight: bold;"></span></div>
+                <div id="timer">Zeit: 30:00</div>
+            </div>
+
+            <form id="exam-form" onsubmit="submitExam(event)">
+                
+                <!-- I. LESEN -->
+                <div class="section-card">
+                    <h2 class="section-title">I. LESEN [12 Punkte]</h2>
+                    <div class="reading-box">
+                        <strong>Lies den Text!</strong><br><br>
+                        Tina ist Schülerin in Klasse 8. Am Wochenende hat sie viel Zeit. Sie trifft Petra, eine Freundin aus München, und sie gehen zusammen ins Cafe. Dort reden sie zusammen. Tina ist sehr sportlich. Sie spielt oft Tennis und fährt am Sonntag Rad. Am liebsten sitzt sie aber zu Hause und liest. Sie sieht nicht viel fern. Tinas Berufswunsch ist Stewardess. Sie findet den Beruf interessant. Sie möchte viel reisen und die Welt kennen lernen.
+                    </div>
+
+                    <!-- Q1 -->
+                    <div class="question-item">
+                        <p>1. Wohin gehen Tina und Petra?</p>
+                        <div class="options">
+                            <label><input type="radio" name="q1" value="a"> Sie gehen ins Kino.</label>
+                            <label><input type="radio" name="q1" value="b"> Sie gehen ins Cafe.</label>
+                            <label><input type="radio" name="q1" value="c"> Sie gehen in den Sportklub.</label>
+                        </div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="question-item">
+                        <p>2. Was macht Tina am liebsten?</p>
+                        <div class="options">
+                            <label><input type="radio" name="q2" value="a"> Sie sieht fern.</label>
+                            <label><input type="radio" name="q2" value="b"> Sie spielt Tennis.</label>
+                            <label><input type="radio" name="q2" value="c"> Sie sitzt zu Hause.</label>
+                        </div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="question-item">
+                        <p>3. Was möchte Tina werden?</p>
+                        <div class="options">
+                            <label><input type="radio" name="q3" value="a"> Lehrerin.</label>
+                            <label><input type="radio" name="q3" value="b"> Pilotin.</label>
+                            <label><input type="radio" name="q3" value="c"> Stewardess.</label>
+                        </div>
+                    </div>
+
+                    <!-- Q4 -->
+                    <div class="question-item">
+                        <p>4. Tina ist die ... von Petra.</p>
+                        <div class="options">
+                            <label><input type="radio" name="q4" value="a"> Schwester.</label>
+                            <label><input type="radio" name="q4" value="b"> Freundin.</label>
+                            <label><input type="radio" name="q4" value="c"> Mutter.</label>
+                        </div>
+                    </div>
+
+                    <!-- Q5 -->
+                    <div class="question-item">
+                        <p>5. Wo liest Tina?</p>
+                        <div class="options">
+                            <label><input type="radio" name="q5" value="a"> Im Sportklub.</label>
+                            <label><input type="radio" name="q5" value="b"> Im Cafe.</label>
+                            <label><input type="radio" name="q5" value="c"> Zu Hause.</label>
+                        </div>
+                    </div>
+
+                    <!-- Q6 -->
+                    <div class="question-item">
+                        <p>6. Wann fährt Tina Rad?</p>
+                        <div class="options">
+                            <label><input type="radio" name="q6" value="a"> Am Samstag.</label>
+                            <label><input type="radio" name="q6" value="b"> Am Sonntag.</label>
+                            <label><input type="radio" name="q6" value="c"> Am Abend.</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- II. GRAMMATIK -->
+                <div class="section-card">
+                    <h2 class="section-title">II. GRAMMATIK [12 Punkte]</h2>
+                    <p style="font-weight:bold; margin-bottom:15px;">Wähle die richtige Antwort aus!</p>
+
+                    <!-- G1 -->
+                    <div class="question-item">
+                        <p>1. Wann (steht - seht - kommt) ihr auf? – Um 8 Uhr.</p>
+                        <div class="options">
+                            <label><input type="radio" name="g1" value="steht"> steht</label>
+                            <label><input type="radio" name="g1" value="seht"> seht</label>
+                            <label><input type="radio" name="g1" value="kommt"> kommt</label>
+                        </div>
+                    </div>
+
+                    <!-- G2 -->
+                    <div class="question-item">
+                        <p>2. (Um - Am - Im) drei Uhr treffe ich Sabine.</p>
+                        <div class="options">
+                            <label><input type="radio" name="g2" value="Am"> Am</label>
+                            <label><input type="radio" name="g2" value="Im"> Im</label>
+                            <label><input type="radio" name="g2" value="Um"> Um</label>
+                        </div>
+                    </div>
+
+                    <!-- G3 -->
+                    <div class="question-item">
+                        <p>3. Ich schreibe morgen eine Mathearbeit. Ich (möchte - kann - muss) viel lernen.</p>
+                        <div class="options">
+                            <label><input type="radio" name="g3" value="kann"> kann</label>
+                            <label><input type="radio" name="g3" value="möchte"> möchte</label>
+                            <label><input type="radio" name="g3" value="muss"> muss</label>
+                        </div>
+                    </div>
+
+                    <!-- G4 -->
+                    <div class="question-item">
+                        <p>4. (Was - Warum - Wie) möchtest du Lehrer werden? – Das macht Spaß.</p>
+                        <div class="options">
+                            <label><input type="radio" name="g4" value="Wie"> Wie</label>
+                            <label><input type="radio" name="g4" value="Was"> Was</label>
+                            <label><input type="radio" name="g4" value="Warum"> Warum</label>
+                        </div>
+                    </div>
+
+                    <!-- G5 -->
+                    <div class="question-item">
+                        <p>5. Müsst ihr heute (ein - einkauft - einkaufen)? – Nein.</p>
+                        <div class="options">
+                            <label><input type="radio" name="g5" value="ein"> ein</label>
+                            <label><input type="radio" name="g5" value="einkauft"> einkauft</label>
+                            <label><input type="radio" name="g5" value="einkaufen"> einkaufen</label>
+                        </div>
+                    </div>
+
+                    <!-- G6 (Added by Expert) -->
+                    <div class="question-item">
+                        <p>6. Wir (fahren - fährst - fährt) im Sommer nach Deutschland.</p>
+                        <div class="options">
+                            <label><input type="radio" name="g6" value="fährst"> fährst</label>
+                            <label><input type="radio" name="g6" value="fährt"> fährt</label>
+                            <label><input type="radio" name="g6" value="fahren"> fahren</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- III. SÄTZE ORDNET -->
+                <div class="section-card">
+                    <h2 class="section-title">III. SCHREIBE DIE SÄTZE RICHTIG! [10 Punkte]</h2>
+                    
+                    <div class="question-item">
+                        <p>1. Hobby – hast – welches – du?</p>
+                        <input type="text" class="text-answer-input" name="s1" placeholder="Schreibe den Satz richtig...">
+                    </div>
+
+                    <div class="question-item">
+                        <p>2. spiele – ich – Gitarre – am Freitag.</p>
+                        <input type="text" class="text-answer-input" name="s2" placeholder="Schreibe den Satz richtig...">
+                    </div>
+
+                    <div class="question-item">
+                        <p>3. keine – hat – morgen – Felix – Zeit.</p>
+                        <input type="text" class="text-answer-input" name="s3" placeholder="Schreibe den Satz richtig...">
+                    </div>
+
+                    <div class="question-item">
+                        <p>4. Bioarbeit – schreibt – eine – ihr – heute?</p>
+                        <input type="text" class="text-answer-input" name="s4" placeholder="Schreibe den Satz richtig...">
+                    </div>
+
+                    <div class="question-item">
+                        <p>5. in – wohnt – Kairo – Mohamed. (Zusatzfrage)</p>
+                        <input type="text" class="text-answer-input" name="s5" placeholder="Schreibe den Satz richtig...">
+                    </div>
+                </div>
+
+                <!-- IV. DIALOGERGÄNZUNG -->
+                <div class="section-card">
+                    <h2 class="section-title">IV. DIALOGERGÄNZUNG [6 Punkte]</h2>
+                    <p style="font-weight:bold; margin-bottom:15px;">Ergänze den Dialog!</p>
+                    
+                    <div class="reading-box" style="background: white; font-family: monospace;">
+                        <strong>Elke:</strong> Hallo, Heba! Hier ist Elke.<br>
+                        <strong>Heba:</strong> Hallo, Elke! <input type="text" class="text-answer-input" name="d1" placeholder="..." style="width: 200px; display:inline-block;">?<br>
+                        <strong>Elke:</strong> Danke, gut. Was machst du jetzt?<br>
+                        <strong>Heba:</strong> <input type="text" class="text-answer-input" name="d2" placeholder="..." style="width: 250px; display:inline-block;">.<br>
+                        <strong>Elke:</strong> <input type="text" class="text-answer-input" name="d3" placeholder="..." style="width: 250px; display:inline-block;">?<br>
+                        <strong>Heba:</strong> Nein, am Donnerstag muss ich viel lernen.
+                    </div>
+                </div>
+
+                <div class="btn-center">
+                    <button type="submit" class="btn">Prüfung abgeben</button>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen">
+            <h2>Ergebnis der Monatsprüfung</h2>
+            <div class="score-badge" id="final-score-display">0 / 40</div>
+            <p id="student-result-name" style="font-size: 1.2rem; font-weight: bold; margin-bottom: 20px;"></p>
+            
+            <div id="feedback-container" style="text-align: left; margin-top: 30px;">
+                <!-- Feedback items populated via JS -->
+            </div>
+
+            <div class="btn-center">
+                <a id="whatsapp-link" href="#" target="_blank" class="whatsapp-btn">Ergebnis per WhatsApp senden</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let timerInterval;
+        let timeLeft = 30 * 60; // 30 minutes in seconds
+        let studentName = "";
+
+        // Correct Answers Matrix
+        const correctAnswers = {
+            q1: "b", // Sie gehen ins Cafe
+            q2: "c", // Sie sitzt zu Hause
+            q3: "c", // Stewardess
+            q4: "b", // Freundin
+            q5: "c", // Zu Hause
+            q6: "b", // Am Sonntag
+            
+            g1: "steht",
+            g2: "Um",
+            g3: "muss",
+            g4: "Warum",
+            g5: "einkaufen",
+            g6: "fahren",
+
+            s1: "Welches Hobby hast du?",
+            s2: "Ich spiele am Freitag Gitarre.",
+            s3: "Felix hat morgen keine Zeit.",
+            s4: "Schreibt ihr heute eine Bioarbeit?",
+            s5: "Mohamed wohnt in Kairo.",
+
+            d1: "wie geht es dir",
+            d2: "ich spiele tennis",
+            d3: "hast du am donnerstag zeit"
+        };
+
+        function startExam() {
+            const nameInput = document.getElementById("student-name").value.trim();
+            if(!nameInput) {
+                alert("Bitte geben Sie Ihren Namen ein!");
+                return;
+            }
+            studentName = nameInput;
+            document.getElementById("display-name").textContent = studentName;
+            
+            document.getElementById("login-screen").classList.add("hidden");
+            document.getElementById("exam-screen").classList.remove("hidden");
+
+            startTimer();
+        }
+
+        function startTimer() {
+            const timerDisplay = document.getElementById("timer");
+            timerInterval = setInterval(() => {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                
+                timerDisplay.textContent = `Zeit: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Die Zeit ist abgelaufen! Die Prüfung wird automatisch abgegeben.");
+                    submitExam(new Event('submit'));
+                }
+                timeLeft--;
+            }, 1000);
+        }
+
+        function normalizeText(text) {
+            return text.trim().toLowerCase().replace(/[.,?!]/g, "").replace(/\s+/g, " ");
+        }
+
+        function submitExam(event) {
+            if(event) event.preventDefault();
+            clearInterval(timerInterval);
+
+            let score = 0;
+            let feedbackHTML = "";
+
+            // Evaluate Lesen (6 questions, 2 pts each = 12)
+            for(let i=1; i<=6; i++) {
+                let qName = `q${i}`;
+                let selected = document.querySelector(`input[name="${qName}"]:checked`);
+                let userVal = selected ? selected.value : "";
+                let isCorrect = (userVal === correctAnswers[qName]);
+                if(isCorrect) score += 2;
+
+                feedbackHTML += `<div class="feedback-item ${isCorrect ? 'correct' : 'incorrect'}">
+                    <strong>Lesen Fr. ${i}:</strong> ${isCorrect ? 'Richtig (+2 P.)' : `Falsch (Ihre Antwort: ${userVal \vert{}\vert{} 'Keine'}, Richtige Antwort:${correctAnswers[qName]})`}
+                </div>`;
+            }
+
+            // Evaluate Grammatik (6 questions, 2 pts each = 12)
+            for(let i=1; i<=6; i++) {
+                let gName = `g${i}`;
+                let selected = document.querySelector(`input[name="${gName}"]:checked`);
+                let userVal = selected ? selected.value : "";
+                let isCorrect = (userVal === correctAnswers[gName]);
+                if(isCorrect) score += 2;
+
+                feedbackHTML += `<div class="feedback-item ${isCorrect ? 'correct' : 'incorrect'}">
+                    <strong>Grammatik Fr. ${i}:</strong> ${isCorrect ? 'Richtig (+2 P.)' : `Falsch (Ihre Antwort: ${userVal \vert{}\vert{} 'Keine'}, Richtige Antwort:${correctAnswers[gName]})`}
+                </div>`;
+            }
+
+            // Evaluate Sätze ordnen (5 questions, 2 pts each = 10)
+            for(let i=1; i<=5; i++) {
+                let sName = `s${i}`;
+                let userVal = document.querySelector(`input[name="${sName}"]`).value;
+                let normUser = normalizeText(userVal);
+                let normCorrect = normalizeText(correctAnswers[sName]);
+                let isCorrect = (normUser === normCorrect);
+                if(isCorrect) score += 2;
+
+                feedbackHTML += `<div class="feedback-item ${isCorrect ? 'correct' : 'incorrect'}">
+                    <strong>Sätze Fr. ${i}:</strong> ${isCorrect ? 'Richtig (+2 P.)' : `Falsch (Ihre Antwort: "${userVal}", Richtige Antwort: "${correctAnswers[sName]}")`}
+                </div>`;
+            }
+
+            // Evaluate Dialog (3 questions, 2 pts each = 6)
+            for(let i=1; i<=3; i++) {
+                let dName = `d${i}`;
+                let userVal = document.querySelector(`input[name="${dName}"]`).value;
+                let normUser = normalizeText(userVal);
+                let isCorrect = normUser.includes(correctAnswers[dName].split(" ")[0]) || (normUser.length > 3 && normUser === normalizeText(correctAnswers[dName]));
+                if(isCorrect) score += 2;
+
+                feedbackHTML += `<div class="feedback-item ${isCorrect ? 'correct' : 'incorrect'}">
+                    <strong>Dialog Pkt. ${i}:</strong> ${isCorrect ? 'Richtig (+2 P.)' : `Falsch/Unvollständig (Ihre Antwort: "${userVal}", Vorschlag: "${correctAnswers[dName]}")`}
+                </div>`;
+            }
+
+            // Show results screen
+            document.getElementById("exam-screen").classList.add("hidden");
+            document.getElementById("result-screen").style.display = "block";
+            document.getElementById("final-score-display").textContent = `${score} / 40`;
+            document.getElementById("student-result-name").textContent = `Schüler: ${studentName}`;
+            document.getElementById("feedback-container").innerHTML = feedbackHTML;
+
+            // WhatsApp Share link setup
+            let waNumber = "201000000000"; // ضع رقم واتساب الخاص بك هنا
+            let waMessage = `Ergebnisprüfung:%0AName: ${encodeURIComponent(studentName)}%0APunkte: ${score} von 40`;
+            document.getElementById("whatsapp-link").href = `https://wa.me/${waNumber}?text=${waMessage}`;
+        }
+    </script>
+</body>
+</html>
